@@ -9,9 +9,25 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(18,GPIO.IN)
 
+
+snapshot_command = "http://raspberrypi:8080/stream/snapshot.jpeg?delay_s=0"
+
+uploader_path =  "../Dropbox-Uploader/dropbox_uploader.sh"
+db_cam_path = "/pi_cam/cam_1"
+script_path = os.path.dirname(os.path.realpath(__file__))
+
+
 broker = '192.168.1.80'
 state_topic = 'home-assistant/pir/state'
-delay=1
+delay=3
+
+def db_if_exists(filename):
+   list = check_output([uploader_path, "list", "pi_cam/cam_1"])
+   print list
+   if filename in list:
+      return True
+   else:
+      return False
 
 #pir loop:-
 while True:
